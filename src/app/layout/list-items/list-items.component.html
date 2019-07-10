@@ -1,0 +1,87 @@
+<app-page-header [heading]="'Livret Elève'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<h5 class="text-center">
+  <em>
+    Tapez le code de l'eleve, puis selectionnez une matiere et ensuite cliquez sur le botoun 
+    <b>getInfo</b>
+  </em>
+</h5>
+<div class="row">
+  
+  <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2">
+        <form  class="form-inline" novalidate>
+            <div class="form-group">
+                <label class="sr-only" for="inputNiv">Niveau</label>
+                <select class="form-control input-sm" #Code_niv name="Niveau"  name="Niveau">
+                         <!--(change)="filterIt()" -->
+                         <option  [value]="'4'">4 A.F</option>
+                         <option  [value]="'7'">7 A.F</option>
+                 </select>
+               
+                </div>     
+     <div class="form-group">
+      <span class="col-md-2 col-sm-2">  <input type="text"  class="form-control noeleve" #input_CodeEleve placeholder="Code Eleve" /> </span>
+    </div>
+     <div class="form-group">
+       <label class="sr-only" for="inputOrdre">Matiere</label>
+       <select class="form-control input-sm" #Code_mat name="Matiere"  name="CodeMatiere_Temp">
+                <!--(change)="filterIt()" -->
+                <option *ngFor="let M of lesMatieres" [value]="M.CodeMat">{{M.Libelle}}</option>
+        </select>
+       <button type="button" class="btn btn-md bgInfo  btn-primary" (click)="getInfo(input_CodeEleve.value,Code_mat.value,Code_niv.value)">getInfo</button>
+       </div>
+       <span>
+        <div class="form-group" *ngIf="nbItem >=1">
+          <span class="col-md-6 col-sm-6">  
+            <input type="text"  class="form-control noquestion" #input_noquestion placeholder="No Question" />
+           
+          </span>
+          <button type="button" class="btn btn-sm bgInfo  btn-primary" (click)="pointerlaquestion(input_noquestion.value)">Pointer</button>
+        </div>
+         
+       </span>
+
+ </form> 
+ 
+ 
+  
+
+
+  </div>
+  
+ 
+</div>
+
+
+  <div *ngIf="infoEleve !== undefined">
+            <app-info-eleves [infoeleve]="infoEleve"></app-info-eleves>
+  </div>    
+  
+  <!-- Les Items par unite -->
+  <div *ngIf="currentItem.Question.length >0">
+         <label class="k">Question {{currentItem.Ordre}} ) - {{currentItem.Question}} </label>
+        <div *ngIf="currentItem.Qcm == 1">
+          <app-champs-select [possibles_reponses]="currentItem.possiblereponses" [valeur]="currentItem.reponse" (selected)="Affiche($event,currentItem.CodeItem,currentItem.Ordre)"></app-champs-select>
+        </div>
+        
+          
+        
+         <div *ngIf="currentItem.Qcm == 0">
+        
+            <app-champs-saisie (givenValue)="Affiche($event,currentItem.CodeItem,currentItem.Ordre)" [valeur]="currentItem.reponse"></app-champs-saisie>
+             
+            <br/>
+          </div>
+         <br/>
+         <div *ngIf="currentItem.Question.length >0" class="text-center">
+         <button type="button" class="btn btn-xm btn-info" (click)="precedentItem()">
+           <span class="fa fa-chevron-left" aria-hidden="true"></span>
+           
+           </button>
+        
+         <button type="button" class="btn btn-xm btn-info" (click)="prochainItem()" *ngIf="currentItemNumber <= (nbItem-1)">
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+           
+           </button>
+         </div>
+        </div>
+ 

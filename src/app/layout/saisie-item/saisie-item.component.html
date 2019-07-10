@@ -1,0 +1,168 @@
+<app-page-header [heading]="'Ajouts Items'" [icon]="'fa-bar-chart-o'"></app-page-header>
+
+<form #f="ngForm" (ngSubmit)="Save()"  novalidate>
+    <!--<div class="row">-->
+    <div class="row">
+       <div class="col-2">
+        <select data-toggle="tooltip" title="Selection de Niveau"  class="form-control form-control-md" (change)="filterIt()"  name="Niveau" [(ngModel)]="CodeNiveau" name="CodeNiveau">
+          <option [value]="'7'" >7 A.F</option>
+          <option [value]="'4'" selected>4 A.F</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <select data-toggle="tooltip" title="Selection de Matière"  class="form-control form-control-md" (change)="filterIt()" name="Matiere" [(ngModel)]="SaiItemEnCours.CodeMatiere" name="SaiItemEnCours.CodeMatiere">
+          <option *ngFor="let M of lesMatieres" [value]="M.CodeMat">{{M.Libelle}}</option>
+        </select>
+      </div> 
+
+      <div class="col-1">
+        <input type="number" data-toggle="tooltip" title="Ordre Question" class="form-control form-control-md" id="inputOrdre" step="0.01" placeholder="Ordre" maxlength="4" min="1" [(ngModel)]="SaiItemEnCours.Ordre"  name="ordre"> 
+      </div> 
+
+      <div class="col-0">
+        <input type="hidden"  class="form-control form-control-md" id="inputCodeItem" placeholder="Code Item"  name="CodeMat">
+      </div>
+    
+    <div class="col-2">
+        <select data-toggle="tooltip" title="Selection domaine cognitif" class="form-control form-control-md" name="CodeDomCogn" [(ngModel)]="SaiItemEnCours.CodeDomCogn" name="SaiItemEnCours.CodeDomCogn">
+         <option *ngFor="let dcogn of lesDomainesCognitifs" [value]="dcogn.CodeDom_cognitif">{{dcogn.Libelle}}</option>
+       </select>
+    </div> 
+
+    <div class="col-2">
+        <select data-toggle="tooltip" title="Selection domaine contenu" class="form-control form-control-md"  name="CodeDomCont" [(ngModel)]="SaiItemEnCours.CodeDomCont" name="SaiItemEnCours.CodeDomCont">
+          <option *ngFor="let dcont of lesDomainesContenus" [value]="dcont.CodeDom_Con">{{dcont.Libelle}}</option>
+        </select>
+    </div> 
+    <div class="col-3">
+        <label class="g"><input data-toggle="tooltip" title="Est-ce Q.C.M" type="checkbox" class="form-check-input" [(ngModel)]="SaiItemEnCours.Qcm" name="Qcm">  Q .C .M </label>
+    </div>
+   </div>
+   <div class="row ">
+    <div class="col-8 mtb">
+        <input type="text" data-toggle="tooltip" title="Saisir la question " class="form-control form-control-md" id="inputQuestion" placeholder="Question" [(ngModel)]="SaiItemEnCours.Question"  name="Saisie" >
+    </div>
+
+    
+    <div class="col-1 mtb">
+      <button type="submit" class="btn btn-success" ><span class="fa fa-floppy-o fa-2x"></span> </button>
+    </div>
+   </div>
+</form> 
+<hr/>
+<!--<div class="container" >-->
+   <div class="row"> 
+    <div class="col-7" >
+      <div class="row">
+          
+              <!--<fieldset *ngIf="nbItem >0" >
+                  <legend class="">les Items</legend>-->
+                  <div *ngIf="nbItem >0">
+                  <div class="bb card-block table-responsive">   
+                      <table class="table table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                                  <th class="col-6">Question</th>
+                                  <th class="col-1">Code</th>
+                                  
+                                  <th class="col-1">Ordre</th>
+                                  <th class="col-4">Action</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                                <tr *ngFor="let item of lesSaiItems">
+                                     <td class="col-6">{{ item.Question }}</td>
+                                    <td class="col-1" >{{ item.CodeItem }}</td>
+                                   
+                                    <td class="col-1"><span class="pull-right">{{ item.Ordre }}</span></td> 
+                                    <td class="col-4"> 
+                                       <p class="aksyon">
+                                        <span (click)="Editer(item)">
+                                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                          </span>|
+                                        <span (click)="Supprimer(item)">
+                                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                          </span>|
+                                        <span (click)="VoirPossibleReponse(item)"><i (click)="VoirPossibleReponse(item)" class="fa fa-plug" aria-hidden="true"></i></span>
+                                       </p>
+                                    </td>
+                                </tr>
+                          </tbody>
+                    </table>
+                 </div>   
+              </div>  
+             
+          <!--</fieldset>-->
+          
+      </div>  
+         <div  class="text-center">
+         <button type="button" class="btn btn-xm btn-info" (click)="precedentItem()">
+           <span class="fa fa-chevron-left" aria-hidden="true"></span>
+           
+           </button>
+        
+         <button type="button" class="btn btn-xm btn-info" (click)="prochainItem()">
+            <span class="fa fa-chevron-right" aria-hidden="true"></span>
+           
+           </button>
+    </div>
+         
+    </div>
+    <div class="col-5">
+        <fieldset>
+          <legend class="">Possible reponses</legend>
+          <!-- <div *ngIf="konbyen > 0"> -->
+          <div *ngIf="konbyen >=0">    
+               <h5><span class="label label-info">{{ itemCourantTempon.Ordre }}-) {{ itemCourantTempon.Question }}</span></h5>
+               <!--<p>{{ itemCourantTempon.Question }}</p>-->
+               <form #f1="ngForm"  class="form-inline" novalidate>
+               <div class="form-group">
+                        <label class="sr-only" for="inputPR">Ordre</label>
+                        <input type="text" class="form-control" id="inputPR" placeholder="entrer possible reponse"  name="inputPR" #inputPR/> 
+                    </div>
+                    <div class="form-group">
+                            <label class="sr-only" for="inputLettre">Matiere</label>
+                            <select class="form-control input-sm"  name="Lettre"  name="Lettre" #Lettre>
+                                     <option value="A">A</option>
+                                         <option value="B">B</option>
+                                            <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                    <option value="E">E</option>
+                                                        <option value="F">F</option>
+                                                    <option value="G">G</option>
+                                                <option value="H">H</option>
+                                            <option value="J">I</option>
+                                        <option value="J">J</option>
+                                    <option value="K">K</option>
+                                        <option value="L">L</option>
+                                            <option value="M">M</option>
+                                                <option value="O">O</option>
+                                                    <option value="P">P</option>
+                                                        <option value="Q">Q</option>
+                                                            <option value="R">R</option>
+                            </select>
+                   </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="inputVR">Code Item</label>
+                        <input type="checkbox" class="form-control ml-auto " id="inputVR"name="inputVR" #inputVR/>
+                    </div>
+                    <button type="button" class="btn btn-success" (click)="Save2(inputPR.value,Lettre.value,inputVR.value,inputVR.value)"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+               </form>  
+              <hr/>
+               <ul class="list-group">
+                    <li class="list-group-item " *ngFor="let ps of lesPossibleReponses" (click)="DeleteDomaine(ps)">
+                    <!--<span class="badge">{{ dom.codeDom }}</span>-->
+                     <span class="label label-success">{{ps.LettrePossibleReponse}}-) {{ps.text}} </span> <input type="checkbox" [value]="ps.estVraiReponse" class="ml-auto"/>
+                    </li>
+                </ul>
+               <!--{{lesPossibleReponses}}-->
+           </div>
+      </fieldset>
+      
+</div>
+<!--</div>-->
+<!--{{SaiItemEnCours | json}}-->
+<!--{{lesMatieres | json}}-->
+
+
+  

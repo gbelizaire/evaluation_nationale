@@ -1,0 +1,24 @@
+<div class="row">
+        <div class="col-md-8">
+                <ul class="list-group">
+                        <li class="list-group-item " *ngFor="let ps of possibles_reponses" [class.selected]="ps.CodePossibleReponse == valeur">
+                                {{ ps.LettrePossibleReponse }} - {{ ps.text }}
+                                <span class="ml-auto " *ngIf="ps.CodePossibleReponse == valeur">
+                                      
+                                        <i (click)="envoyer(ps.CodePossibleReponse)" class ="selectedItem fa fa-check-square-o fa-2x">
+                                        </i>
+                                </span>
+                                <span class="ml-auto " *ngIf="ps.CodePossibleReponse != valeur">
+                                        
+                                          <i (click)="envoyer(ps.CodePossibleReponse)" class ="selectedItem fa fa-square-o fa-2x">
+                                          </i>
+                                  </span>
+                        </li>
+                </ul>
+        </div>
+        <div class="col-md-4">
+
+                <span class="rounded rcorners1 bg-inverse text-white"> {{valeur.substr(valeur.length-1,1)}}  </span>
+        </div>
+</div>
+

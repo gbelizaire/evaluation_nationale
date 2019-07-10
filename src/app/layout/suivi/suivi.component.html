@@ -1,0 +1,83 @@
+<app-page-header [heading]="'Suivi Elève'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<h5 class="text-center">
+  <em>
+    Selecionner le niveau puis Tapez le code de l'ecole, ensuite cliquez sur le botoun 
+    <b>Afficher</b>
+  </em>
+</h5>
+<div class="row">
+  
+  <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2">
+    <form class="form-inline" novalidate>
+     <div class="col-2">
+        <select data-toggle="tooltip" title="Selection de Niveau"  class="form-control form-control-md" #CodeNiveau name="CodeNiveau">
+          <option [value]="'7 AF'" >7 A.F</option>
+          <option [value]="'4 AF'" selected>4 A.F</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <select data-toggle="tooltip" title="Selection la Salle"  class="form-control form-control-md" #num_Salle name="num_Salle">
+          <option [value]="'1'" selected>1</option>
+          <option [value]="'2'" >2</option>
+          <option [value]="'3'" >3</option>
+          <option [value]="'4'" >4</option>
+          <option [value]="'5'" >5</option>
+          <option [value]="'6'" >6</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <input type="text" data-toggle="tooltip" title="Code Ecole" class="form-control form-control-md" #input_CodeEcole placeholder="Code Ecole" />
+      </div>
+     
+    <div class="col-4">
+     <button type="button" class="btn btn-md bgInfo  btn-primary" (click)="getInfo(CodeNiveau.value,input_CodeEcole.value,num_Salle.value)">Afficher</button>
+    </div>
+    </form> 
+  </div>
+  
+</div>
+<br/>
+<div class="row">
+    <div class="col col-xl-10 offset-xl-1 col-lg-12">
+        <div class="card mb-8">
+            <div class="card-header">
+                Liste des Elèves
+            </div>
+            <div class="card-block table-responsive">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Sexe</th>
+                            <th>Date Naissance</th>
+                            <th>Math</th>
+                            <th>Franc.</th>
+                            <th>Creol.</th>
+                            <th>Quest. Cont.</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let eleve of listeEleves">
+                            <!--<th scope="row">1</th>-->
+                            <td>{{ eleve.Code_el_eva }}</td>
+                            <td>{{ eleve.Nom }}</td>
+                            <td>{{ eleve.Prenom }}</td>
+                            <td>{{ eleve.Sexe }}</td>
+                            <td>{{ eleve.Date_Naissance }}</td>
+                            <td ><span class="tch"><input data-toggle="tooltip" title="Mathematique" type="checkbox" #Ma class="form-check-input" [value]="eleve.Ma" (change)="ChangeMe(eleve.Code_el_eva,'Ma',Ma.checked)" name="Ma_ch" [checked]="eleve.Ma ==='1'? true:false"></span> </td>
+                            <td ><span class="tch"><input data-toggle="tooltip" title="Francais" type="checkbox" #Fr class="form-check-input" [value]="eleve.Fr"  (change)="ChangeMe(eleve.Code_el_eva,'Fr',Fr.checked)" name="Fr_ch" [checked]="eleve.Fr ==='1'? true:false" > </span></td>
+                            <td ><span class="tch"><input data-toggle="tooltip" title="Creole" type="checkbox" #Cr class="form-check-input" [value]="eleve.Cr" (change)="ChangeMe(eleve.Code_el_eva,'Cr',Cr.checked)" name="Cr_ch" [checked]="eleve.Cr ==='1'? true:false"> </span> </td>
+                            <td ><span class="tch"><input data-toggle="tooltip" title="Questionnaire de Contexte" type="checkbox" #Qc class="form-check-input" [value]="eleve.Qc" (change)="ChangeMe(eleve.Code_el_eva,'Qc',Qc.checked)" name="Qc_ch" [checked]="eleve.Qc ==='1'? true:false"> </span></td>
+                            
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>   
+<!--{{listeEleves | json}}-->
+  

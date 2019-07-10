@@ -1,0 +1,79 @@
+<app-page-header [heading]="'Questionnaire Enseignant'" [icon]="'fa-bar-chart-o'"></app-page-header>
+<h5 class="text-center">
+  <em>
+    Selecionner le niveau puis Tapez le code de l'Enseignant, ensuite cliquez sur le botoun 
+    <b>Afficher</b>
+  </em>
+</h5>
+<div class="row">
+  
+  <div class="col-md-8 offset-md-2 col-lg-8 offset-lg-2">
+    <form class="form-inline" novalidate>
+     <div class="col-2">
+        <select data-toggle="tooltip" title="Selection de Niveau"  class="form-control form-control-md" #CodeNiveau name="CodeNiveau">
+          <option [value]="'7'" >7 A.F</option>
+          <option [value]="'4'" selected>4 A.F</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <input type="text" data-toggle="tooltip" title="Code Ecole" class="form-control form-control-md" #input_CodeEns placeholder="Code Enseignant" />
+      </div>
+      <div class="col-1">
+        <select data-toggle="tooltip" title="Salle"  class="form-control form-control-md" #CodeSalle name="CodeSalle">
+          <option [value]="'1'" >1</option>
+          <option [value]="'2'" >2</option>
+          <option [value]="'3'" >3</option>
+          <option [value]="'4'" >4</option>
+          <option [value]="'5'" >5</option>
+          <option [value]="'6'" >6</option>
+          <option [value]="'7'" >7</option>
+          <option [value]="'8'" >8</option>
+        </select>
+      </div>
+     
+    <div class="col-4">
+     <button type="button" class="btn btn-md bgInfo  btn-primary" (click)="getInfo(input_CodeEns.value,'Qe',CodeNiveau.value)">Afficher</button>
+    
+    </div>
+    </form> 
+  </div>
+  
+</div>
+
+
+<div *ngIf="infoEcole !== undefined">
+  <app-info-ecoles [infoecole]="infoEcole"></app-info-ecoles>    
+ <!-- <app-info-ecoles [infoecole]="infoEcole"></app-info-ecoles> -->
+</div>    
+
+<!-- Les Items par unite -->
+<div *ngIf="currentItem.Question.length >0">
+      <label class="k">Question {{currentItem.Ordre}} ) - {{currentItem.Question}} </label>
+     <div *ngIf="currentItem.Qcm == 1">
+       <app-champs-select [possibles_reponses]="currentItem.possiblereponses" [valeur]="currentItem.reponse" (selected)="Affiche($event,currentItem.CodeItem,currentItem.Ordre)"></app-champs-select>
+     </div>
+     
+       
+     
+      <div *ngIf="currentItem.Qcm == 0">
+     
+         <app-champs-saisie (givenValue)="Affiche($event,currentItem.CodeItem,currentItem.Ordre)" [valeur]="currentItem.reponse"></app-champs-saisie>
+          
+         <br/>
+       </div>
+      <br/>
+      <div *ngIf="currentItem.Question.length >0" class="text-center">
+      <button type="button" class="btn btn-xm btn-info" (click)="precedentItem()">
+        <span class="fa fa-chevron-left" aria-hidden="true"></span>
+        
+        </button>
+     
+      <button type="button" class="btn btn-xm btn-info" (click)="prochainItem()" *ngIf="currentItemNumber <= (nbItem-1)">
+         <span class="fa fa-chevron-right" aria-hidden="true"></span>
+        
+        </button>
+      </div>
+     </div>
+
+
+  

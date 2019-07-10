@@ -1,0 +1,15 @@
+<div class="row">
+  <span class="col-md-4 col-sm-4"> 
+     <input type="text"  class="form-control" #input_age [value]="valeur"/> 
+  </span>
+
+  <span class="col-md-2 pull-left">
+    <button class="btn btn-success" (click)="envoyer(input_age.value);input_age.value=''">
+      Valider
+    </button>
+  </span>
+  <div class="col-md-4">
+      Reponse :<span class="Saisie">{{valeur}}</span>
+  </div>
+</div>
+<!-- Reponse Eleve :{{valeur}} -->
